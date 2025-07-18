@@ -27,8 +27,15 @@ steps:
 - script: dotnet publish -c Release -o $(Build.ArtifactStagingDirectory)
   displayName: 'Publish app'
 
+- script: dotnet restore
+- script: dotnet build --configuration Release
+- script: dotnet test
+- script: dotnet publish -c Release -o $(Build.ArtifactStagingDirectory)
+- task: PublishBuildArtifacts@1
+
 - task: PublishBuildArtifacts@1
   inputs:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
     ArtifactName: 'drop'
     publishLocation: 'Container'
+
